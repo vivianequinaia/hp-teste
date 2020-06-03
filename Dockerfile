@@ -9,7 +9,10 @@ RUN rm -rf /application/.git \
     && cp -f /application/.env.dist /application/.env \
     && composer install $COMPOSER_ARGS
 
-FROM phpdockerio/php74-fpm
+FROM php:7.4.6-fpm
+
+RUN apt-get update \
+    && docker-php-ext-install mysqli pdo pdo_mysql
 
 RUN apt-get update \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
