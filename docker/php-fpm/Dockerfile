@@ -1,10 +1,15 @@
-FROM phpdockerio/php74-fpm
+FROM php:7.4.6-fpm
 
 WORKDIR "/application"
 
 RUN apt-get update \
+    && docker-php-ext-install mysqli pdo pdo_mysql
+
+RUN apt-get update \
     && apt-get -y install git \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* \
+    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+RUN apt-get update \
     && apt-get install -y wget
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
