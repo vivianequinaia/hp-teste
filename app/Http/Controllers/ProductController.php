@@ -9,9 +9,25 @@ use HP\Modules\Products\Create\Requests\Request as CreateRequest;
 use HP\Modules\Products\Create\UseCase as CreateUseCase;
 use HP\Modules\Products\Delete\Requests\Request as DeleteRequest;
 use HP\Modules\Products\Delete\UseCase as DeleteUseCase;
+use HP\Modules\Products\Listing\UseCase as ListingUseCase;
 
 class ProductController extends Controller
 {
+    public function index()
+    {
+        $useCase = new ListingUseCase(
+            new ProductRepository(),
+            new LogMonologAdapter()
+        );
+
+        $useCase->execute();
+
+        return response()->json(
+            $useCase->getResponse()->getPresenter()->toArray(),
+            $useCase->getResponse()->getStatus()->getCode()
+        );
+    }
+
     public function store(Request $httpRequest)
     {
         $request = new CreateRequest(
