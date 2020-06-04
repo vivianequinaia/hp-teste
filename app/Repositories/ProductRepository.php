@@ -18,8 +18,16 @@ use HP\Modules\Products\Show\Exceptions\ProductNotFoundException;
 use HP\Modules\Products\Show\Gateways\GetProductDataGateway;
 use HP\Modules\Products\Show\Requests\Request;
 use HP\Modules\Products\Show\Entities\Product as ShowProduct;
+use HP\Modules\Purchases\Shopping\Exceptions\GetProductAmountDatabaseException;
+use HP\Modules\Purchases\Shopping\Gateways\GetProductAmountGateway;
+use HP\Modules\Purchases\Shopping\Exceptions\ProductNotFoundException as PurchaseProductNotFoundException;
 
-class ProductRepository implements CreateProductGateway, DeleteProductGateway, FindProductGateway, GetProductDataGateway
+class ProductRepository implements
+    CreateProductGateway,
+    DeleteProductGateway,
+    FindProductGateway,
+    GetProductDataGateway,
+    GetProductAmountGateway
 {
     private $model = Product::class;
 
@@ -88,7 +96,7 @@ class ProductRepository implements CreateProductGateway, DeleteProductGateway, F
             throw new FindProductDatabaseException($exception);
         }
 
-        if(is_null($productResult)) {
+        if (is_null($productResult)) {
             throw (new ProductNotFoundException())->setProductId($request->getId());
         }
 
@@ -112,5 +120,21 @@ class ProductRepository implements CreateProductGateway, DeleteProductGateway, F
                 $purchaseResult['total'] ?? null
             )
         );
+    }
+
+    public function getAmountById(int $id): float
+    {
+        try {
+            $result = $this->model::where('id', $id)
+                ->first();
+        } catch (\Exception $exception) {
+            throw new GetProductAmountDatabaseException($exception);
+        }
+
+        if (is_null($result)) {
+            throw (new PurchaseProductNotFoundException())->setProductId($id);
+        }
+
+        return $result['amount'];
     }
 }
