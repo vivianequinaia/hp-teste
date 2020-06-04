@@ -16,12 +16,15 @@ class ProductCollectionPresenter
 
     public function present(): productCollectionPresenter
     {
-        foreach ($this->productCollection->all() as $product) {
-            array_push($this->presenter, [
-                'name' => $product->getName(),
-                'amount' => $product->getAmount(),
-                'qty_stock' => $product->getQuantityStock(),
-            ]);
+        if(!empty($this->productCollection->all())) {
+            foreach ($this->productCollection->all() as $product) {
+                array_push($this->presenter, [
+                        'name' => $product->getName(),
+                        'amount' => $product->getAmount(),
+                        'qty_stock' => $product->getQuantityStock(),
+                    ]
+                );
+            }
         }
         return $this;
     }

@@ -31,7 +31,7 @@ final class UseCase
             $this->response = (new Builder())
                 ->withFindProductRule(
                     new FindProductRule(
-                        $this->findProductGateway,
+                        $this->findProductGateway
                     )
                 )->build();
             $this->logger->info('[Products::Listing] Finish Use Case.');

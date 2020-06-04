@@ -72,14 +72,16 @@ class ProductRepository implements
         }
 
         $productCollection = new ProductCollection();
-        foreach ($result as $product) {
-            $productCollection->add(
-                new ListingProduct(
-                    $product['name'],
-                    $product['amount'],
-                    $product['quantity_stock']
-                )
-            );
+        if (!empty($result)) {
+            foreach ($result as $product) {
+                $productCollection->add(
+                    new ListingProduct(
+                        $product['name'],
+                        $product['amount'],
+                        $product['quantity_stock']
+                    )
+                );
+            }
         }
 
         return $productCollection;

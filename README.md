@@ -1,9 +1,9 @@
-#HP Teste
+# HP Teste
 
 Esse projeto é responsável por realizar compras de produtos utilizando a forma de pagamento cartão de crédito. 
 Possibilita também todo o gerenciamento de estoque e venda de produtos.
 
-#####Dependências
+##### Dependências
 - docker
 - docker-compose
 ___
@@ -13,9 +13,12 @@ ___
 1. Faça o clone do repositório com `git clone git@github.com:VivianeQuinaia/hp-teste.git`.
 2. Copie o arquivo .env.dist para .env `cp .env.dist .env`.
 3. Utilize o comando `docker-compose build` para realizar o pull das imagens.
-4. Execute seus containers com o comando `docker-compose up -d`.
-5. Entre no container do php `make php` e execute o comando `composer install`.
-6. Ainda dentro do container do passo 5 execute o comando `php artisan key:generate` para gerar o valor da variável `APP_KEY`.
+4. Execute o comando `docker network create nome_da_network` em nome_da_network utilize o valor variável `NETWORK_DEFAULT` do seu .env;
+5. Execute seus containers com o comando `docker-compose up -d`.
+6. Entre no container do php `make php` e execute o comando `composer install`.
+7. Ainda dentro do container do passo 6 execute o comando `php artisan key:generate` para gerar o valor da variável `APP_KEY`.
+8. execute o comando `php artisan migrate` para criar as tabelas do banco de dados.
+9. Dê permissão para leitura, escrita e esxecução para os arquivos da pastas `/storage`. `sudo chmod 777 -R storage/`.
 ___
 
 ## Documentação dos endpoints
@@ -31,7 +34,7 @@ Saiba mais sobre o swagger em: [Swagger](https://swagger.io/)
 ___
 
 ## Postman
-As collections para acessar os endpoints via postman se encontram em:
+A collection para acessar os endpoints via postman se encontram em:
 
 [postman_collection](./storage/Hp_postman_collection.json).
 
