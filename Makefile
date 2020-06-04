@@ -40,7 +40,7 @@ php: start-php
 	@docker-compose exec php-fpm bash
 
 test: start-php
-	docker exec -ti hp-php-fpm ./vendor/phpunit/phpunit/phpunit tests
+	docker exec -ti php-fpm ./vendor/phpunit/phpunit/phpunit tests
 
 mysql: start-db
 	docker exec -ti hp-database mysql --user=${DB_USERNAME} --password=${DB_PASSWORD} --database=${DB_DATABASE}
