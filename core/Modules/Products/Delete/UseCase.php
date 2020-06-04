@@ -43,7 +43,7 @@ final class UseCase
                 $exception->getMessage()
             );
             $this->logger->error(
-                '[Reports::Generator] An error occurred while delete product from database.',
+                '[Products::Delete] An error occurred while delete product from database.',
                 [
                     "exception" => get_class($exception),
                     "message" => $exception->getMessage(),
@@ -59,7 +59,7 @@ final class UseCase
                 $exception->getMessage()
             );
             $this->logger->error(
-                '[Reports::Generator] A generic error occurred when trying to delete product.',
+                '[Products::Delete] A generic error occurred when trying to delete product.',
                 [
                     "exception" => get_class($exception),
                     "message" => $exception->getMessage(),

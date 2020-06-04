@@ -13,8 +13,13 @@ use HP\Modules\Products\Listing\Collections\ProductCollection;
 use HP\Modules\Products\Listing\Exceptions\FindProductDatabaseException;
 use HP\Modules\Products\Listing\Gateways\FindProductGateway;
 use HP\Modules\Products\Listing\Entities\Product as ListingProduct;
+use HP\Modules\Products\Show\Entities\Purchase;
+use HP\Modules\Products\Show\Exceptions\ProductNotFoundException;
+use HP\Modules\Products\Show\Gateways\GetProductDataGateway;
+use HP\Modules\Products\Show\Requests\Request;
+use HP\Modules\Products\Show\Entities\Product as ShowProduct;
 
-class ProductRepository implements CreateProductGateway, DeleteProductGateway, FindProductGateway
+class ProductRepository implements CreateProductGateway, DeleteProductGateway, FindProductGateway, GetProductDataGateway
 {
     private $model = Product::class;
 
@@ -70,5 +75,42 @@ class ProductRepository implements CreateProductGateway, DeleteProductGateway, F
         }
 
         return $productCollection;
+    }
+
+    public function getProduct(Request $request): ShowProduct
+    {
+        $purchaseModel = \App\Models\Purchase::class;
+        try {
+            $productResult = $this->model::where('id', $request->getId())
+                ->where('active', true)
+                ->first();
+        } catch (\Exception $exception) {
+            throw new FindProductDatabaseException($exception);
+        }
+
+        if(is_null($productResult)) {
+            throw (new ProductNotFoundException())->setProductId($request->getId());
+        }
+
+        try {
+            $purchaseResult = $purchaseModel::where('product_id', $productResult['id'])
+                ->orderBy('id', 'desc')
+                ->first();
+        } catch (\Exception $exception) {
+            throw new FindProductDatabaseException($exception);
+        }
+
+        return new ShowProduct(
+            $productResult['id'],
+            $productResult['name'],
+            $productResult['amount'],
+            $productResult['quantity_stock'],
+            new Purchase(
+                isset($purchaseResult['created_at']) ?
+                    date('Y-m-d', strtotime($purchaseResult['created_at'])) :
+                    null,
+                $purchaseResult['total'] ?? null
+            )
+        );
     }
 }

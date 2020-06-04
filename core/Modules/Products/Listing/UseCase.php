@@ -11,7 +11,7 @@ use HP\Modules\Products\Listing\Responses\ResponseInterface;
 use HP\Modules\Products\Listing\Responses\Status;
 use HP\Modules\Products\Listing\Rules\FindProductRule;
 
-class UseCase
+final class UseCase
 {
     private $findProductGateway;
     private $logger;
@@ -41,7 +41,7 @@ class UseCase
                 $exception->getMessage()
             );
             $this->logger->error(
-                '[Reports::Generator] An error occurred while find for products on database.',
+                '[Products::Listing] An error occurred while find for products on database.',
                 [
                     "exception" => get_class($exception),
                     "message" => $exception->getMessage(),
@@ -57,7 +57,7 @@ class UseCase
                 $exception->getMessage()
             );
             $this->logger->error(
-                '[Reports::Generator] A generic error occurred when trying listing products.',
+                '[Products::Listing] A generic error occurred when trying listing products.',
                 [
                     "exception" => get_class($exception),
                     "message" => $exception->getMessage(),

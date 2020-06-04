@@ -43,7 +43,7 @@ final class UseCase
                 $exception->getMessage()
             );
             $this->logger->error(
-                '[Reports::Generator] An error occurred while insert product on database.',
+                '[Products::Create] An error occurred while insert product on database.',
                 [
                     "exception" => get_class($exception),
                     "message" => $exception->getMessage(),
@@ -59,7 +59,7 @@ final class UseCase
                 $exception->getMessage()
             );
             $this->logger->error(
-                '[Reports::Generator] A generic error occurred when trying to create a new product.',
+                '[Products::Create] A generic error occurred when trying to create a new product.',
                 [
                     "exception" => get_class($exception),
                     "message" => $exception->getMessage(),
