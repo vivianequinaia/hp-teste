@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Adapters\LogMonologAdapter;
-use App\Http\Requests\Request;
+use App\Http\Requests\Product\Request;
 use App\Repositories\ProductRepository;
 use HP\Modules\Products\Create\Requests\Request as CreateRequest;
 use HP\Modules\Products\Create\UseCase as CreateUseCase;
