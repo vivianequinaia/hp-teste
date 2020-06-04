@@ -1,0 +1,297 @@
+swagger: "2.0"
+info:
+  description: "This project is responsible for making product purchases using the credit card payment method. It also allows all inventory management and product sales."
+  version: "1.0.0"
+  title: "HP Teste"
+schemes:
+- "https"
+- "http"
+paths:
+  /api/products:
+    post:
+      tags:
+      - "products"
+      description: "Add a new product."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/CreateProduct"
+      responses:
+        '200':
+          description: Successful
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+        '400':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+        '500':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+    get:
+      tags:
+      - "products"
+      description: "List all products."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        '200':
+          description: Successful
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              products:
+                $ref: '#/definitions/Products'
+        '400':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+        '500':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+  /api/product/{id}:
+    get:
+      tags:
+      - "product"
+      description: "List all products."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          minimum: 1
+          description: The product id
+      responses:
+        '200':
+          description: Successful
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              products:
+                $ref: '#/definitions/Product'
+        '400':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+        '500':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+    delete:
+      tags:
+      - "product"
+      description: "List all products."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          minimum: 1
+          description: The product id
+      responses:
+        '200':
+          description: Successful
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              message:
+                type: string
+        '400':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+        '500':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+  /api/purchase:
+    post:
+      tags:
+      - "purchase"
+      description: "Save a new purchase."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Purchase"
+      responses:
+        '200':
+          description: Successful
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              message:
+                type: string
+        '400':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+        '500':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/definitions/Status'
+              error:
+                type: string
+
+definitions:
+  CreateProduct:
+    type: object
+    required:
+    - name
+    - amount
+    - qty_stock
+    properties:
+      name:
+        type: string
+      amount:
+        type: number
+      qty_stock:
+        type: integer
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+        
+  Products:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        amount:
+          type: number
+        qty_stock:
+          type: integer
+  Product:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      amount:
+        type: number
+      qty_stock:
+        type: integer
+      last_purchase:
+        type: object
+        properties:
+          date:
+            type: string
+          value:
+            type: number
+  Purchase:
+    type: object
+    required:
+    - product_id
+    - quantity_purchased
+    - card
+    - owner
+    - card_number
+    - date_expiration
+    - flag
+    - cvv
+    properties:
+      product_id:
+        type: integer
+      quantity_purchased:
+        type: integer
+      card: 
+        type: object
+        properties:
+          owner:
+            type: string
+          card_number:
+            type: string
+          date_expiration:
+            type: string
+          flag:
+            type: string
+          cvv:
+            type: string
