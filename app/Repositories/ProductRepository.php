@@ -9,8 +9,12 @@ use HP\Modules\Products\Create\Requests\Request as CreateRequest;
 use HP\Modules\Products\Delete\Exceptions\DeleteProductDatabaseException;
 use HP\Modules\Products\Delete\Gateways\DeleteProductGateway;
 use HP\Modules\Products\Delete\Requests\Request as DeleteRequest;
+use HP\Modules\Products\Listing\Collections\ProductCollection;
+use HP\Modules\Products\Listing\Exceptions\FindProductDatabaseException;
+use HP\Modules\Products\Listing\Gateways\FindProductGateway;
+use HP\Modules\Products\Listing\Entities\Product as ListingProduct;
 
-class ProductRepository implements CreateProductGateway, DeleteProductGateway
+class ProductRepository implements CreateProductGateway, DeleteProductGateway, FindProductGateway
 {
     private $model = Product::class;
 
@@ -41,5 +45,30 @@ class ProductRepository implements CreateProductGateway, DeleteProductGateway
         } catch (\Exception $exception) {
             throw new DeleteProductDatabaseException($exception);
         }
+    }
+
+    public function findProducts(): ProductCollection
+    {
+        try {
+            $result = $this->model::where('active', true)
+                ->where('quantity_stock', '>', 0)
+                ->get()
+                ->toArray();
+        } catch (\Exception $exception) {
+            throw new FindProductDatabaseException($exception);
+        }
+
+        $productCollection = new ProductCollection();
+        foreach ($result as $product) {
+            $productCollection->add(
+                new ListingProduct(
+                    $product['name'],
+                    $product['amount'],
+                    $product['quantity_stock']
+                )
+            );
+        }
+
+        return $productCollection;
     }
 }
