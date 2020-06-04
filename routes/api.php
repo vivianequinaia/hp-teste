@@ -13,4 +13,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+/*
+| Product Routes
+*/
+
 Route::post('/products/', 'ProductController@store')->name('product-store');
+
+Route::delete('/products/{id}', 'ProductController@destroy')->name('product-store');
