@@ -56,7 +56,7 @@ final class UseCase
         } catch (\Exception $exception) {
             $this->response = new Response(
                 new Status(500, 'Internal Server Error'),
-                $exception->getMessage()
+                'A generic error occurred when trying to create a new product.'
             );
             $this->logger->error(
                 '[Products::Create] A generic error occurred when trying to create a new product.',

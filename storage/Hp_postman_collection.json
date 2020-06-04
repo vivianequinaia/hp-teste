@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "7df8ace3-0924-4272-876b-bce7fd9c31b2",
+		"name": "Hp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Teclado\",\n\t\"amount\": 600.00,\n\t\"qty_stock\": 0\n}"
+						},
+						"url": {
+							"raw": "0.0.0.0:8090/api/products",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "0.0.0.0:8090/api/product/6",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"product",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listing Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "0.0.0.0:8090/api/products",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "0.0.0.0:8090/api/product/1",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Purchase",
+			"item": [
+				{
+					"name": "Shopping",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"product_id\": 1,\n\t\"quantity_purchased\": 5,\n\t\"card\": {\n\t    \"owner\": \"John Doe\",\n\t    \"card_number\": \"5448477131521659\",\n\t    \"date_expiration\": \"12/2018\",\n\t    \"flag\": \"Master\",\n\t    \"cvv\": \"123\"\n  }\n}"
+						},
+						"url": {
+							"raw": "0.0.0.0:8090/api/purchase",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

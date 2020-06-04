@@ -7,7 +7,6 @@ use HP\Modules\Purchases\Shopping\Builders\Builder;
 use HP\Modules\Purchases\Shopping\Exceptions\GetProductAmountDatabaseException;
 use HP\Modules\Purchases\Shopping\Exceptions\PaymentGatewayException;
 use HP\Modules\Purchases\Shopping\Exceptions\ProductNotFoundException;
-use HP\Modules\Purchases\Shopping\Exceptions\SavePurchaseDatabaseException;
 use HP\Modules\Purchases\Shopping\Gateways\GetProductAmountGateway;
 use HP\Modules\Purchases\Shopping\Gateways\SavePurchaseGateway;
 use HP\Modules\Purchases\Shopping\Gateways\ShoppingPaymentGateway;
@@ -64,7 +63,8 @@ final class UseCase
                 )->withSavePurchaseRule(
                     new SavePurchaseRule(
                         $this->savePurchaseGateway,
-                        $request
+                        $request,
+                        $this->logger
                     )
                 )
                 ->build();
@@ -79,8 +79,9 @@ final class UseCase
                 [
                     "exception" => get_class($exception),
                     "message" => $exception->getMessage(),
-                    "data" => [
-                        "product_id" => $exception->getProductId()
+                    "previous" => [
+                        "exception" => $exception->getPrevious() ? get_class($exception->getPrevious()) : null,
+                        "message" => $exception->getPrevious() ? $exception->getPrevious()->getMessage() : null,
                     ]
                 ]
             );
@@ -94,9 +95,11 @@ final class UseCase
                 [
                     "exception" => get_class($exception),
                     "message" => $exception->getMessage(),
-                    "data" => [
-                        "product_id" => $exception->getProductId()
+                    "previous" => [
+                        "exception" => $exception->getPrevious() ? get_class($exception->getPrevious()) : null,
+                        "message" => $exception->getPrevious() ? $exception->getPrevious()->getMessage() : null,
                     ]
+
                 ]
             );
         } catch (ProductNotFoundException $exception) {
@@ -114,21 +117,10 @@ final class UseCase
                     ]
                 ]
             );
-        } catch (SavePurchaseDatabaseException $exception) {
-            $this->logger->error(
-                '[Purchases::Shopping] An error occurred while save purchase on database.',
-                [
-                    "exception" => get_class($exception),
-                    "message" => $exception->getMessage(),
-                    "data" => [
-                        "product_id" => $exception->getProductId()
-                    ]
-                ]
-            );
         } catch (\Exception $exception) {
             $this->response = new Response(
                 new Status(500, 'Internal Server Error'),
-                $exception->getMessage()
+                'A generic error occurred while trying to pay.'
             );
             $this->logger->error(
                 '[Purchases::Shopping] A generic error occurred while trying to pay.',
