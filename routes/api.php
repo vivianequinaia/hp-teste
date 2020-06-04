@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 | Product Routes
 */
 Route::get('/products', 'ProductController@index')->name('product-index');
-Route::get('/products/{id}', 'ProductController@show')->name('product-show');
+Route::get('/product/{id}', 'ProductController@show')->name('product-show');
 Route::post('/products', 'ProductController@store')->name('product-store');
 Route::delete('/product/{id}', 'ProductController@destroy')->name('product-delete');
 

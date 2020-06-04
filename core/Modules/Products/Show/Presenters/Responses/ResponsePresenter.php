@@ -22,7 +22,7 @@ class ResponsePresenter
                 'code' => $this->response->getStatus()->getCode(),
                 'message' => $this->response->getStatus()->getMessage(),
             ],
-            'products' => (new ProductPresenter($this->response->getProduct()))->present()->toArray()
+            'product' => (new ProductPresenter($this->response->getProduct()))->present()->toArray()
         ];
 
         return $this;
